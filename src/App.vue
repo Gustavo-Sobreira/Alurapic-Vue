@@ -7,18 +7,15 @@
 
     <h1 class="cabecalho" v-text="titulo"></h1>
 
+    <input type="search" class="filtro" v-on:input="filtro = $event.target.value" placeholder="Filtre os títulos">
+
     <ul class="lista-fotos">
       <!-- v-for vai percorrer o array e criar um li por cada item -->
-      <li class="lista-fotos-item" v-for="foto in fotos" :key="foto">
+      <li class="lista-fotos-item" v-for="foto of fotosComFiltro" :key="foto">
         
-        <div class="painel">
-
-          <p class="nomefotos">{{foto.titulo}}</p>
-
-          <!-- :src vai pegar o valor do atributo src e colocar na tag img -->
-          <img class="imagem" :src="foto.url" :alt="foto.titulo" > 
-
-        </div>
+        <meu-painel :titulo="foto.titulo">
+          <img class="imagem" :src="foto.url" :alt="foto.titulo">
+        </meu-painel>
         
       </li>
     </ul>
@@ -29,19 +26,39 @@
 </template>
 
 <script>
+
+  import Painel from "./components/shared/painel/Painel.vue";
+
   export default{
+
+    components: {  //Cria  um nome para o componente
+      'meu-painel': Painel
+    },
 
     //A função Data é usada para criar atributos
     data(){
 
       return{
 
-        titulo: 'Alura Pic',
+        titulo: 'AluraPic',
 
-        fotos: []
+        fotos: [],
+
+        filtro:'',
       }
     },
-//Aqui temos 2 atributos Titulo e Fotos, no caso fotos é uma lista(array)
+
+    comuted:{
+
+      fotosComFiltro(){
+
+        if (this.filtro) {
+          return [];
+        }else{
+          return this.fotos;
+        }
+      }
+    },
 
     created(){
       
@@ -89,40 +106,19 @@
 
 
 }
-
-.painel{
-
-  display: inline-block;
-
-  width: 13vw;
-  height: 100%;
-
-  margin: 0;
-  padding: 0;
-  
-  background-color: rgba(245, 239, 239, 0.753);
-  box-shadow: 5px 5px 5px 5px rgb(191, 212, 212);
-  border-radius: 10px;
-
-  vertical-align: top;
-
-}
-.nomefotos{
-
-  font-size: 1rem;
-  text-align: center;
-  text-transform: uppercase;
-
-  margin: 0,5vh;
-  padding: 0;
-
-  box-shadow: 1px 1px 1px 0px rgba(192, 186, 186, 0.171);
-
-}
-  
+ 
 .imagem{
 
   max-width: 100%;
 
+}
+
+.filtro{
+
+  display: block;
+
+  margin-top: 2%;
+  margin-left: 86%;
+  border-color: rgba(52, 52, 161, 0.534);
 }
 </style>
