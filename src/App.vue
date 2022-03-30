@@ -27,49 +27,47 @@
 
 <script>
 
-  import Painel from "./components/shared/painel/Painel.vue";
+import Painel from './components/shared/painel/Painel.vue'
 
-  export default{
+export default {
 
-    components: {  //Cria  um nome para o componente
-      'meu-painel': Painel
-    },
+  components: {
 
-    //A função Data é usada para criar atributos
-    data(){
+    'meu-painel': Painel
+  },
 
-      return{
+  data () {
+    return {
+      titulo: 'Alurapic', 
 
-        titulo: 'AluraPic',
+      fotos: [],
 
-        fotos: [],
-
-        filtro:'',
-      }
-    },
-
-    comuted:{
-
-      fotosComFiltro(){
-
-        if (this.filtro) {
-          return [];
-        }else{
-          return this.fotos;
-        }
-      }
-    },
-
-    created(){
-      
-      var promise = this.$http.get("http://localhost:3000/v1/fotos");
-      //
-      promise
-        .then(res => res.json())
-        .then(fotos => this.fotos = fotos);
+      filtro: ''
     }
-  }
+  },
 
+  computed: {
+
+    fotosComFiltro() {
+
+      if (this.filtro) {
+        let exp = new RegExp(this.filtro.trim(), 'i');
+        return this.fotos.filter(foto => exp.test(foto.titulo));
+      } else {
+        return this.fotos;
+      }
+
+    }
+  },
+
+  created() {
+
+    this.$http
+      .get('http://localhost:3000/v1/fotos')
+      .then(res => res.json())
+      .then(fotos => this.fotos = fotos, err => console.log(err));
+  }
+}
 </script>
 
 <style>
