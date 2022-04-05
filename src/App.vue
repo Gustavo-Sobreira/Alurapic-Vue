@@ -7,7 +7,7 @@
 
     <h1 class="cabecalho" v-text="titulo"></h1>
 
-    <input type="search" class="filtro" v-on:input="filtro = $event.target.value" placeholder="Filtre os títulos">
+    <input type="search" class="filtro" @input="filtro = $event.target.value" placeholder="Filtre os títulos">
 
     <ul class="lista-fotos">
       <!-- v-for vai percorrer o array e criar um li por cada item -->

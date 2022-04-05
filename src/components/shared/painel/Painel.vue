@@ -2,9 +2,15 @@
 
     <div class="painel">
 
-        <h2 class="painel-titulo">{{ titulo }}</h2>
-        <slot class="painel-conteudo">
-        </slot>
+        <h2 class="painel-titulo" @dblclick="visivel = ! visivel" >{{ titulo }}</h2>
+
+        <transition name="painel-fade">
+
+          <div class="painel-conteudo" v-show="visivel">
+            <slot></slot> <!-- slot é um componente que não permite o uso de v-show então para manter sua propriedade mas esconder o conteudo passamos na div  -->
+          </div>
+
+        </transition>
 
     </div>
   
@@ -14,6 +20,15 @@
   export default{
 
       props: ['titulo'],
+
+      data(){
+
+        return{
+
+          visivel: true
+
+        }
+      }
   }
 
 </script>
@@ -56,4 +71,19 @@
   max-width: 100%;
 
 }
+
+.painel-fade-enter, .painel-fade-leave-active{
+  
+  opacity: 0;
+}
+
+.painel-fade-enter-active, .painel-fade-leave-active{
+  
+
+  transition: opacity 0.5s;
+}
 </style>
+
+painel-fade-enter // Antes de entrar no painel
+painel-fade-enter-active // Painel entrou
+painel-fade-leave // Antes de sair do painel
