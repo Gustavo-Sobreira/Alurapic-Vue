@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style scoped>
-
+ 
 
 .imagem-responsiva{
     
